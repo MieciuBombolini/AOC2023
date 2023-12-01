@@ -9,11 +9,18 @@ import java.util.List;
 
 public abstract class AoCUtils {
 
+    public static final String RESOURCE_PATH = "src/main/resources/";
+
+    //use reFetch() if you need to refresh the data
+    //use dontFetch() if you don't want to fetch new data
+
     private int part = 1;
     private long timerStart;
 
     public AoCUtils(String day) {
-        Path path = Path.of("src/main/resources/day" + day + ".txt");
+        Path path = Path.of( RESOURCE_PATH + "day" + day + ".txt");
+        InputDataFetcher.fetchAndSave(day);
+
         List<String> inputLines = new ArrayList<>();
         if (Files.exists(path)) {
             try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -66,5 +73,13 @@ public abstract class AoCUtils {
         for (String s : input)
             longs.add(Long.parseLong(s));
         return longs;
+    }
+
+    public static void refetch() {
+        InputDataFetcher.refetch = true;
+    }
+
+    public static void dontFetch() {
+        InputDataFetcher.dontFetch = true;
     }
 }
