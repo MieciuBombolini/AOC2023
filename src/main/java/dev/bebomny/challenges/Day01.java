@@ -20,18 +20,17 @@ public class Day01 extends AoCUtils {
     //  If there is only one digit use it 2 times
     //  If there are more digits only use the first and last one
     //sum them
-
     private static final Pattern numberOnlyPattern = Pattern.compile("\\d");
 
     //part2
     //Extract number asin part1 but also include worded number like: "three"
-
     private static final HashMap<String, Integer> wordToNumberMap = new HashMap<>();
     private static final HashMap<String, Integer> reversedWordToNumberMap = new HashMap<>();
     private static final String combinedPattern;
     private static final String reversedCombinedPattern;
     private static final Pattern extendedNumberPattern;
     private static final Pattern reversedExtendedNumberPattern;
+
     static {
         wordToNumberMap.put("one", 1);
         wordToNumberMap.put("two", 2);
@@ -53,21 +52,16 @@ public class Day01 extends AoCUtils {
         reversedWordToNumberMap.put("thgie", 8);
         reversedWordToNumberMap.put("enin", 9);
 
-
-
         combinedPattern = "\\d|(" + String.join("|", wordToNumberMap.keySet()) + ")";
-        reversedCombinedPattern = "\\d|(" + String.join("|", reversedWordToNumberMap.keySet()) + ")";
-        //combinedPattern = "\\d|(one|two|three|four|five|six|seven|eight|nine)";
-        //combinedPattern = "(\\d)|(\\b(?:one|two|three|four|five|six|seven|eight|nine)\\b)";
         extendedNumberPattern = Pattern.compile(combinedPattern, Pattern.CASE_INSENSITIVE);
+
+        reversedCombinedPattern = "\\d|(" + String.join("|", reversedWordToNumberMap.keySet()) + ")";
         reversedExtendedNumberPattern = Pattern.compile(reversedCombinedPattern, Pattern.CASE_INSENSITIVE);
     }
 
 
-
     @Override
     public void solve(List<String> input) {
-
         //Part 1
         long calibrationSum = 0;
 
@@ -82,14 +76,13 @@ public class Day01 extends AoCUtils {
         lap(calibrationSum);
 
         //Part 2
-        System.out.println("CombinedPattern: " + combinedPattern);
-
         long fixedCalibrationSum = 0;
 
         for (String line : input) {
             List<Integer> extractedNumbers = extractAllNumbers(line);
+            if(extractedNumbers.isEmpty()) continue;
             String number = extractedNumbers.getFirst() + String.valueOf(extractedNumbers.getLast());
-            System.out.println("Fixed calibration number: " + number + " | String: " + line + "| Number1: " + extractedNumbers.getFirst() + " Number2: " + extractedNumbers.getLast());
+            //System.out.println("Fixed calibration number: " + number + " | String: " + line + "| Number1: " + extractedNumbers.getFirst() + " Number2: " + extractedNumbers.getLast());
             fixedCalibrationSum += Integer.parseInt(number);
         }
 
@@ -113,7 +106,6 @@ public class Day01 extends AoCUtils {
 
         Matcher numberMatcher = extendedNumberPattern.matcher(input);
 
-
         if (numberMatcher.find()) {
             String match = numberMatcher.group();
             if (match.matches("\\d")) {
@@ -125,11 +117,11 @@ public class Day01 extends AoCUtils {
             }
         }
 
-        //Reverse everything....... aaaaaaaaaaaaaa Its sooo bad
-        StringBuilder reverseBuilder = new StringBuilder();
-        reverseBuilder.append(input);
-        reverseBuilder.reverse();
-        String reversedString = reverseBuilder.toString();
+        //Reverse everything
+        String reversedString = new StringBuilder()
+                .append(input)
+                .reverse()
+                .toString();
         Matcher reverseMatcher = reversedExtendedNumberPattern.matcher(reversedString);
 
         if (reverseMatcher.find()) {
@@ -142,7 +134,6 @@ public class Day01 extends AoCUtils {
                 numbers.add(reversedWordToNumberMap.get(match.toLowerCase()));
             }
         }
-
 
         return numbers;
     }
