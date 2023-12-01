@@ -27,8 +27,11 @@ public class Day01 extends AoCUtils {
     //Extract number asin part1 but also include worded number like: "three"
 
     private static final HashMap<String, Integer> wordToNumberMap = new HashMap<>();
+    private static final HashMap<String, Integer> reversedWordToNumberMap = new HashMap<>();
     private static final String combinedPattern;
+    private static final String reversedCombinedPattern;
     private static final Pattern extendedNumberPattern;
+    private static final Pattern reversedExtendedNumberPattern;
     static {
         wordToNumberMap.put("one", 1);
         wordToNumberMap.put("two", 2);
@@ -40,9 +43,24 @@ public class Day01 extends AoCUtils {
         wordToNumberMap.put("eight", 8);
         wordToNumberMap.put("nine", 9);
 
-        //combinedPattern = "\\d|(" + String.join("|", wordToNumberMap.keySet()) + ")";
-        combinedPattern = "\\d|(one|two|three|four|five|six|seven|eight|nine)";
+        reversedWordToNumberMap.put("eno", 1);
+        reversedWordToNumberMap.put("owt", 2);
+        reversedWordToNumberMap.put("eerht", 3);
+        reversedWordToNumberMap.put("ruof", 4);
+        reversedWordToNumberMap.put("evif", 5);
+        reversedWordToNumberMap.put("xis", 6);
+        reversedWordToNumberMap.put("neves", 7);
+        reversedWordToNumberMap.put("thgie", 8);
+        reversedWordToNumberMap.put("enin", 9);
+
+
+
+        combinedPattern = "\\d|(" + String.join("|", wordToNumberMap.keySet()) + ")";
+        reversedCombinedPattern = "\\d|(" + String.join("|", reversedWordToNumberMap.keySet()) + ")";
+        //combinedPattern = "\\d|(one|two|three|four|five|six|seven|eight|nine)";
+        //combinedPattern = "(\\d)|(\\b(?:one|two|three|four|five|six|seven|eight|nine)\\b)";
         extendedNumberPattern = Pattern.compile(combinedPattern, Pattern.CASE_INSENSITIVE);
+        reversedExtendedNumberPattern = Pattern.compile(reversedCombinedPattern, Pattern.CASE_INSENSITIVE);
     }
 
 
@@ -95,7 +113,8 @@ public class Day01 extends AoCUtils {
 
         Matcher numberMatcher = extendedNumberPattern.matcher(input);
 
-        while (numberMatcher.find()) {
+
+        if (numberMatcher.find()) {
             String match = numberMatcher.group();
             if (match.matches("\\d")) {
                 // If it's a numeric digit, convert and add to the list
@@ -106,6 +125,26 @@ public class Day01 extends AoCUtils {
             }
         }
 
+        //Reverse everything....... aaaaaaaaaaaaaa Its sooo bad
+        StringBuilder reverseBuilder = new StringBuilder();
+        reverseBuilder.append(input);
+        reverseBuilder.reverse();
+        String reversedString = reverseBuilder.toString();
+        Matcher reverseMatcher = reversedExtendedNumberPattern.matcher(reversedString);
+
+        if (reverseMatcher.find()) {
+            String match = reverseMatcher.group();
+            if (match.matches("\\d")) {
+                // If it's a numeric digit, convert and add to the list
+                numbers.add(Integer.parseInt(match));
+            } else {
+                // If it's a word representation, look up and add to the list
+                numbers.add(reversedWordToNumberMap.get(match.toLowerCase()));
+            }
+        }
+
+
         return numbers;
     }
+
 }
