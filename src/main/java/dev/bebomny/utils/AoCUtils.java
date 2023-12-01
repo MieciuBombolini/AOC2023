@@ -1,6 +1,9 @@
 package dev.bebomny.utils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,43 +13,34 @@ public abstract class AoCUtils {
     private long timerStart;
 
     public AoCUtils(String day) {
-        File dayInputFile = new File("src/main/resources/day" + day + ".txt");
-        if(!dayInputFile.exists()) {
+        Path path = Path.of("src/main/resources/day" + day + ".txt");
+        if (!Files.exists(path)) {
             System.out.println("File does not exist!");
             timerStart = System.nanoTime();
             solve(new ArrayList<>());
             return;
         }
 
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(dayInputFile));
-        } catch (FileNotFoundException e) {
-            System.err.println("File Not Found!");
-            solve(new ArrayList<>());
-            return;
-        }
-
         List<String> inputLines = new ArrayList<>();
-        try {
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
-            while((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null)
                 inputLines.add(line);
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         timerStart = System.nanoTime();
         solve(inputLines);
     }
 
     public abstract void solve(List<String> input);
 
-    public void lap(int answer){
+    public void lap(int answer) {
         lap(String.valueOf(answer));
     }
 
-    public void lap(long answer){
+    public void lap(long answer) {
         lap(String.valueOf(answer));
     }
 
@@ -57,24 +51,24 @@ public abstract class AoCUtils {
         part++;
     }
 
-    public String timeToString(long timeSpent){
-        if(timeSpent < 1000)
+    public String timeToString(long timeSpent) {
+        if (timeSpent < 1000)
             return timeSpent + "μs";
-        if(timeSpent < 1000000)
+        if (timeSpent < 1000000)
             return (timeSpent / 1000.0) + "ms";
         return (timeSpent / 1000000.0) + "s";
     }
 
-    public List<Integer> convertToInts(List<String> input){
+    public List<Integer> convertToInts(List<String> input) {
         List<Integer> ints = new ArrayList<>();
-        for(String s : input)
+        for (String s : input)
             ints.add(Integer.parseInt(s));
         return ints;
     }
 
-    public List<Long> convertToLongs(List<String> input){
+    public List<Long> convertToLongs(List<String> input) {
         List<Long> longs = new ArrayList<>();
-        for(String s : input)
+        for (String s : input)
             longs.add(Long.parseLong(s));
         return longs;
     }
