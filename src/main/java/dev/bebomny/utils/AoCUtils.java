@@ -14,22 +14,17 @@ public abstract class AoCUtils {
 
     public AoCUtils(String day) {
         Path path = Path.of("src/main/resources/day" + day + ".txt");
-        if (!Files.exists(path)) {
-            System.out.println("File does not exist!");
-            timerStart = System.nanoTime();
-            solve(new ArrayList<>());
-            return;
-        }
-
         List<String> inputLines = new ArrayList<>();
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            String line;
-            while ((line = reader.readLine()) != null)
-                inputLines.add(line);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (Files.exists(path)) {
+            try (BufferedReader reader = Files.newBufferedReader(path)) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    inputLines.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
         timerStart = System.nanoTime();
         solve(inputLines);
     }
