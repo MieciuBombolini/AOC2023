@@ -34,7 +34,7 @@ public class InputDataFetcher {
             return;
 
         URL url = constructURL(Integer.parseInt(day));
-        Path inputDataPath = Path.of(AoCUtils.RESOURCE_PATH + "day" + day + ".txt");
+        Path inputDataPath = Path.of(AoCUtils.RESOURCE_PATH + "Day" + day + ".txt");
 
         if (Files.exists(inputDataPath) && !refetch) //return here if the file already exists and refetch is not set
             return;
