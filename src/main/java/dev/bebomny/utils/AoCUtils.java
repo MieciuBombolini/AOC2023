@@ -15,12 +15,15 @@ public abstract class AoCUtils {
     //use dontFetch() if you don't want to fetch new data
 
     private int part = 1;
+
+    //The start time in nanoseconds
     private long timerStart;
 
     public AoCUtils(String day) {
         Path path = Path.of( RESOURCE_PATH + "day" + day + ".txt");
         InputDataFetcher.fetchAndSave(day);
 
+        //If the file exists it put each line as String into an ArrayList
         List<String> inputLines = new ArrayList<>();
         if (Files.exists(path)) {
             try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -32,10 +35,11 @@ public abstract class AoCUtils {
                 e.printStackTrace();
             }
         }
-        timerStart = System.nanoTime();
-        solve(inputLines);
+        timerStart = System.nanoTime(); // start measuring time
+        solve(inputLines); // runs the algorithm with the ArrayList as input
     }
 
+    //In this method each class that extends this one should have the solving algorithm
     public abstract void solve(List<String> input);
 
     public void lap(int answer) {
@@ -46,6 +50,7 @@ public abstract class AoCUtils {
         lap(String.valueOf(answer));
     }
 
+    //Records the time it took to run the algorithm and displays the answer with time it took to solve
     public void lap(String answer) {
         long timeSpent = (System.nanoTime() - timerStart) / 1000;
         System.out.println("Part " + part + ": " + answer + ", Duration: " + timeToString(timeSpent));
@@ -53,6 +58,7 @@ public abstract class AoCUtils {
         part++;
     }
 
+    //Converting nanosecond time into a more readable form
     public String timeToString(long timeSpent) {
         if (timeSpent < 1000)
             return timeSpent + "μs";
@@ -61,6 +67,7 @@ public abstract class AoCUtils {
         return (timeSpent / 1000000.0) + "s";
     }
 
+    //Converts and ArrayList of Strings into an ArrayList of Integers
     public List<Integer> convertToInts(List<String> input) {
         List<Integer> ints = new ArrayList<>();
         for (String s : input)
@@ -68,6 +75,7 @@ public abstract class AoCUtils {
         return ints;
     }
 
+    //Converts and ArrayList of Strings into an ArrayList of Longs
     public List<Long> convertToLongs(List<String> input) {
         List<Long> longs = new ArrayList<>();
         for (String s : input)
