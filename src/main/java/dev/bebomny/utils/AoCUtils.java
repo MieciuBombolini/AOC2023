@@ -23,20 +23,18 @@ public abstract class AoCUtils {
         Path path = Path.of( RESOURCE_PATH + "day" + day + ".txt");
         InputDataFetcher.fetchAndSave(day);
 
-        //If the file exists it put each line as String into an ArrayList
-        List<String> inputLines = new ArrayList<>();
+        //If the file exists run with all data
         if (Files.exists(path)) {
             try (BufferedReader reader = Files.newBufferedReader(path)) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    inputLines.add(line);
-                }
+                timerStart = System.nanoTime(); // start measuring time
+                solve(Files.readAllLines(path));
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
+        } else {
+            timerStart = System.nanoTime(); // start measuring time
+            solve(new ArrayList<>()); // runs the algorithm with empty List as input
         }
-        timerStart = System.nanoTime(); // start measuring time
-        solve(inputLines); // runs the algorithm with the ArrayList as input
     }
 
     //In this method each class that extends this one should have the solving algorithm
