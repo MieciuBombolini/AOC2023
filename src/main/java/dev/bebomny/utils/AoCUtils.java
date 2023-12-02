@@ -1,6 +1,5 @@
 package dev.bebomny.utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +9,6 @@ import java.util.List;
 public abstract class AoCUtils {
 
     public static final String RESOURCE_PATH = "src/main/resources/";
-
     //use reFetch() if you need to refresh the data
     //use dontFetch() if you don't want to fetch new data
 
@@ -25,9 +23,10 @@ public abstract class AoCUtils {
 
         //If the file exists run with all data
         if (Files.exists(path)) {
-            try (BufferedReader reader = Files.newBufferedReader(path)) {
+            try {
+                List<String> input = Files.readAllLines(path);
                 timerStart = System.nanoTime(); // start measuring time
-                solve(Files.readAllLines(path));
+                solve(input);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
