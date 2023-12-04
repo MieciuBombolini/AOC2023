@@ -64,7 +64,7 @@ public abstract class AoCUtils {
         return (timeSpent / 1000000.0) + "s";
     }
 
-    //Converts and ArrayList of Strings into an ArrayList of Integers
+    //Converts an ArrayList of Strings into an ArrayList of Integers
     public List<Integer> convertToInts(List<String> input) {
         List<Integer> ints = new ArrayList<>();
         for (String s : input)
@@ -72,7 +72,7 @@ public abstract class AoCUtils {
         return ints;
     }
 
-    //Converts and ArrayList of Strings into an ArrayList of Longs
+    //Converts an ArrayList of Strings into an ArrayList of Longs
     public List<Long> convertToLongs(List<String> input) {
         List<Long> longs = new ArrayList<>();
         for (String s : input)
