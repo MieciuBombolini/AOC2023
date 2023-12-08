@@ -18,7 +18,7 @@ public class Day07 extends AoCUtils {
 
     @Override
     public void solve(List<String> input) {
-        long totalWinnings = 0;
+        long totalWinnings;
         List<Hand> hands = new ArrayList<>(input.stream()
                 .map(Hand::of)
                 .toList());
@@ -86,7 +86,7 @@ public class Day07 extends AoCUtils {
 
         public static int compareCards(Hand hand1, Hand hand2) {
             for (int i = 0; i < hand1.cards().size(); i++) {
-                if(hand1.cards().get(i) != hand2.cards().get(i))
+                if (hand1.cards().get(i) != hand2.cards().get(i))
                     return hand1.cards().get(i).value - hand2.cards().get(i).value;
             }
             return 0;
@@ -124,7 +124,7 @@ public class Day07 extends AoCUtils {
                                 Collectors.summingInt(e -> 1)
                         ));
 
-                if(part2) {
+                if (part2) {
                     int jokerCount = handCount.getOrDefault(Card.JOKER, 0);
                     Card cardWithHighestCount = handCount.entrySet()
                             .stream()
@@ -138,7 +138,7 @@ public class Day07 extends AoCUtils {
                             cardWithHighestCount,
                             handCount.getOrDefault(cardWithHighestCount, 0) + jokerCount);
 
-                    if(jokerCount < 5)
+                    if (jokerCount < 5)
                         handCount.remove(Card.JOKER);
                 }
 
@@ -148,16 +148,16 @@ public class Day07 extends AoCUtils {
                     }
 
                     case 2 -> { //two different //check for four_kind, full house,
-                        if(handCount.containsValue(4)) //four kind
+                        if (handCount.containsValue(4)) //four kind
                             return FOUR_OF_KIND;
-                        if(handCount.containsValue(3)) //full house
+                        if (handCount.containsValue(3)) //full house
                             return FULL_HOUSE;
                     }
 
                     case 3 -> { //check for three of kind, two pair
-                        if(handCount.containsValue(3)) //Three kind
+                        if (handCount.containsValue(3)) //Three kind
                             return THREE_OF_KIND;
-                        if(handCount.containsValue(2)) //Two Pair
+                        if (handCount.containsValue(2)) //Two Pair
                             return TWO_PAIR;
                     }
 
@@ -203,19 +203,19 @@ public class Day07 extends AoCUtils {
             }
 
             public static Card getCardFromChar(char character) {
-                for(Card card : values()) {
-                    if(card.character == character)
+                for (Card card : values()) {
+                    if (card.character == character)
                         return card;
                 }
                 throw new QuackYouException("Trying to parse an unknown card");
             }
 
             public static Card getCardFromCharPart2(char character) {
-                if(character == JOKER.character)
+                if (character == JOKER.character)
                     return JOKER;
 
-                for(Card card : values()) {
-                    if(card.character == character)
+                for (Card card : values()) {
+                    if (card.character == character)
                         return card;
                 }
                 throw new QuackYouException("Trying to parse an unknown card");
