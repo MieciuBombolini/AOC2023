@@ -141,16 +141,7 @@ public class Day08 extends AoCUtils {
                 .toList();
     }
 
-    private record Node(String name, String leftNodeName, String rightNodeName) {
-        public String getNextNode(Instruction instruction) {
-            return switch (instruction) {
-                case LEFT -> leftNodeName();
-                case RIGHT -> rightNodeName();
-            };
-        }
-    }
-
-    public enum Instruction {
+    private enum Instruction {
         LEFT('L'),
         RIGHT('R');
 
@@ -170,6 +161,15 @@ public class Day08 extends AoCUtils {
 
         public char character() {
             return character;
+        }
+    }
+
+    private record Node(String name, String leftNodeName, String rightNodeName) {
+        public String getNextNode(Instruction instruction) {
+            return switch (instruction) {
+                case LEFT -> leftNodeName();
+                case RIGHT -> rightNodeName();
+            };
         }
     }
 }
